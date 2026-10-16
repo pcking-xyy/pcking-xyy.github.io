@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8f4">
+    <meta name="description" content="夏杨阳的个人作品网站：从计算机视觉到数据可视化，记录把想法做成作品的实践。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pcking-xyy.github.io">
+    <link rel="canonical" href="https://pcking-xyy.github.io/">
+    <meta property="og:title" content="夏杨阳 · 个人作品">
+    <meta property="og:description" content="从真实场景出发，让想法成为作品。计算机视觉与数据可视化项目。">
+    <title>夏杨阳 · 个人作品</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳至正文</a>
+    <header class="site-header shell">
+      <a class="brand" href="#top" aria-label="夏杨阳，返回顶部"><span class="brand-symbol" aria-hidden="true">x<span>y</span>y.</span><span data-name>夏杨阳</span></a>
+      <nav aria-label="主导航"><a href="#projects">项目作品 <span>↙</span></a><a href="#contact">联系我 <span>↗</span></a></nav>
+    </header>
+    <main id="main">
+      <section class="hero shell" id="top" aria-labelledby="hero-name">
+        <div class="hero-meta"><p class="eyebrow" id="hero-eyebrow"></p><span class="hero-index">IDEAS → PRACTICE</span></div>
+        <div class="hero-name-row"><h1 id="hero-name">夏杨阳<span class="name-dot" aria-hidden="true">.</span></h1><p class="roman-name" id="roman-name"></p></div>
+        <div class="hero-bottom">
+          <div class="hero-statement"><h2 id="hero-heading"></h2><a class="button button-primary" href="#projects">浏览项目 <span aria-hidden="true">↙</span></a></div>
+          <div class="hero-about"><p id="hero-introduction"></p><div class="hero-note"><span class="small-cross" aria-hidden="true">+</span><p id="hero-note"></p></div></div>
+        </div>
+      </section>
+      <section class="projects shell" id="projects" aria-labelledby="projects-heading">
+        <div class="section-intro"><div><p class="eyebrow"><span class="blue-dot" aria-hidden="true"></span>项目作品 / SELECTED WORK</p><h2 id="projects-heading"></h2></div><p class="section-description" id="projects-introduction"></p></div>
+        <div id="project-list"></div>
+      </section>
+      <section class="contact shell" id="contact" aria-labelledby="contact-heading">
+        <div class="contact-panel"><div class="contact-top"><p class="eyebrow">保持联系 / GET IN TOUCH</p><span class="contact-mark" aria-hidden="true">↗</span></div><h2 id="contact-heading"></h2><p class="contact-description" id="contact-text"></p><a id="email-link" class="email-link"></a><div class="contact-actions"><a id="send-email" class="button button-dark">发送邮件 <span aria-hidden="true">↗</span></a><button class="button button-outline" id="copy-email" type="button">复制邮箱 <span aria-hidden="true">⧉</span></button></div><p class="copy-status" id="copy-status" role="status" aria-live="polite"></p></div>
+      </section>
+    </main>
+    <footer class="site-footer shell"><p>© <span id="year"></span> <span data-name>夏杨阳</span></p><p>想法，在实践中生长。</p><a href="#top">回到顶部 <span aria-hidden="true">↑</span></a></footer>
+    <noscript><p class="noscript-note">请启用 JavaScript 查看完整项目介绍。联系邮箱：2341501016@stu.suda.edu.cn。</p></noscript>
+  </body>
+</html>
