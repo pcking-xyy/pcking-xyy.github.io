@@ -18,3 +18,4 @@
 .detail-figure figcaption{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.7}
 @media(max-width:540px){.detail-table{font-size:11.5px}.detail-table th,.detail-table td{padding:5px 5px}.detail-table td:first-child,.detail-table th:first-child{white-space:normal}.detail-code{font-size:11px;padding:11px 12px}}
 .detail-section{min-width:0}.table-wrap{overflow-x:auto;margin-top:9px}.table-wrap .detail-table{margin-top:0}
+.detail-figure .figure-link{display:block}.detail-figure img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:10px;background:#fff}
