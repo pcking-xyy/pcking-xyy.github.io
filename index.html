@@ -11,26 +11,46 @@
   <meta property="og:description" content="与 AI 协作，把想法做成作品。计算机视觉、大模型应用、数据可视化、深度学习基础与 Agent 实践。">
   <link rel="canonical" href="https://pcking-xyy.github.io/">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=20261102-xor2">
-  <script type="module" src="./app.js?v=20261102-xor2"></script>
+  <link rel="stylesheet" href="./styles.css?v=20261118-bookshelf">
+  <script type="module" src="./app.js?v=20261118-bookshelf"></script>
   <title>夏杨阳 · 作品与 Agent 实践</title>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">跳至正文</a>
   <header class="site-header shell">
     <a class="brand" href="#top" aria-label="夏杨阳，返回顶部"><span class="brand-symbol" aria-hidden="true">xy.</span><span data-name>夏杨阳</span></a>
-    <nav aria-label="主导航"><a href="#projects">项目作品</a><a href="#practice">Agent 实践</a><a href="#contact">联系我 <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="主导航"><a href="#projects">项目书架</a><a href="#practice">Agent 实践</a><a href="#contact">联系我 <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main id="main">
-    <section class="hero shell" aria-labelledby="hero-heading">
-      <div class="hero-layout">
-        <div class="hero-copy"><p class="eyebrow" id="hero-eyebrow"></p><h1 id="hero-heading"></h1><p id="hero-introduction" class="hero-introduction"></p><div class="hero-actions"><a class="button button-primary" href="#projects">探索作品 <span aria-hidden="true">↘</span></a><a class="text-link" href="#practice">我的 Agent 实践 <span aria-hidden="true">→</span></a></div></div>
-        <aside class="hero-index" aria-label="项目快速索引"><div class="index-heading"><span>正在这里发生的实践</span><span aria-hidden="true">↙</span></div><div id="hero-projects"></div><p class="index-note">视觉识别 · 大模型应用 · 数据表达 · 模型基础</p></aside>
+    <section class="bookshelf shell" id="projects" aria-labelledby="shelf-heading">
+      <p class="shelf-eyebrow">01 / PROJECT ARCHIVE</p>
+      <h1 id="shelf-heading" tabindex="-1">项目书架</h1>
+      <div class="shelf-layout" id="shelf-layout" hidden>
+        <div class="shelf-browser">
+          <div class="shelf-scroll"><div class="shelf-books" id="shelf-books" role="group" aria-label="选择项目"></div></div>
+          <div class="shelf-controls">
+            <button id="shelf-prev" type="button" aria-label="上一本">←</button>
+            <span id="shelf-count" aria-hidden="true"></span>
+            <button id="shelf-next" type="button" aria-label="下一本">→</button>
+          </div>
+          <p class="shelf-hint"><span class="hint-mouse">悬停选书</span><span class="hint-touch">点选书籍</span> · 阅读项目详情</p>
+        </div>
+        <div class="shelf-preview">
+          <p class="shelf-caption" id="preview-caption"></p>
+          <h2 id="preview-title"></h2>
+          <p class="shelf-agent" id="preview-agent"></p>
+          <p class="shelf-result" id="preview-result"></p>
+          <a class="shelf-read" id="preview-read">阅读项目 <span aria-hidden="true">↗</span></a>
+          <p class="shelf-announcement" id="shelf-status" role="status"></p>
+        </div>
       </div>
     </section>
-    <section class="projects shell" id="projects" aria-labelledby="projects-heading">
-      <div class="section-intro"><div><p class="eyebrow">01 / 项目作品</p><h2 id="projects-heading"></h2></div><p id="projects-introduction" class="section-description"></p></div>
-      <div id="project-list"></div>
+    <section class="reader shell" id="reader" aria-label="项目正文" hidden>
+      <a class="reader-back" href="#projects">← 返回书架</a>
+      <div class="reader-content" id="project-list"></div>
+      <nav class="reader-nav" aria-label="切换章节">
+        <a id="chapter-prev"></a><a id="chapter-next"></a>
+      </nav>
     </section>
     <section class="practice shell" id="practice" aria-labelledby="practice-heading"><div class="practice-panel">
       <div class="section-intro"><div><p class="eyebrow">02 / AGENT 实践</p><h2 id="practice-heading"></h2></div><p id="practice-introduction" class="section-description"></p></div>

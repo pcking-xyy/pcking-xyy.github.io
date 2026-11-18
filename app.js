@@ -1,4 +1,4 @@
-import { content } from './content.js?v=20261102-xor2';
+import { content } from './content.js?v=20261118-bookshelf';
 const $ = selector => document.querySelector(selector);
 const text = (selector, value) => { $(selector).textContent = value; };
 function element(tag, className, value) {
@@ -23,45 +23,30 @@ $("meta[property='og:title']").content = content.title;
 $("meta[property='og:description']").content = content.description;
 document.querySelectorAll('[data-name]').forEach(node => { node.textContent = content.name; });
 $('.brand').setAttribute('aria-label', `${content.name}，返回顶部`);
-text('#hero-eyebrow', content.hero.eyebrow);
-content.hero.heading.forEach(line => $('#hero-heading').append(element('span', 'heading-line', line)));
-text('#hero-introduction', content.hero.introduction);
-
-text('#projects-heading', content.projectsHeading);
-text('#projects-introduction', content.projectsIntroduction);
 text('#contact-heading', content.contactHeading);
 text('#contact-text', content.contactText);
 text('#year', new Date().getFullYear());
 text('#email-link', content.email);
 $('#email-link').href = $('#send-email').href = `mailto:${content.email}`;
 
+const projectTheme = project => Object.hasOwn(drawings, project.visual) ? project.visual : 'fire';
+const volume = number => String(number).padStart(2, '0');
+
 function renderProjects(projects) {
   const fragment = document.createDocumentFragment();
-  const previews = document.createDocumentFragment();
   projects.forEach((project, index) => {
-    const theme = ['fire','support','game','bridge','mlp'].includes(project.visual) ? project.visual : 'fire';
-    const number = String(index + 1).padStart(2, '0');
-    const preview = element('a', `project-preview theme-${theme}`);
-    preview.href = `#${project.id}`;
-    const thumb = element('span', 'preview-art');
-    thumb.setAttribute('aria-hidden','true');
-    thumb.innerHTML = drawings[theme];
-    const caption = element('span', 'preview-caption');
-    caption.append(element('strong','',project.previewTitle || project.title), element('small','',project.previewTag || project.category));
-    const arrow = element('span','preview-arrow','↗');
-    arrow.setAttribute('aria-hidden','true');
-    preview.append(thumb, caption, arrow);
-    previews.append(preview);
-
+    const theme = projectTheme(project);
     const article = element('article', `project theme-${theme}`);
     article.id = project.id;
+    article.hidden = true;
     const headingId = `project-heading-${index}`;
     article.setAttribute('aria-labelledby', headingId);
     const intro = element('div', 'project-intro');
     const metadata = element('div', 'project-meta');
-    metadata.append(element('span','project-number',number),element('span','project-category',project.category));
-    const heading = element('h3', 'project-title', project.title);
+    metadata.append(element('span','project-number',`CH. ${volume(index + 1)}`),element('span','project-category',project.category));
+    const heading = element('h1', 'project-title', project.title);
     heading.id = headingId;
+    heading.tabIndex = -1;
     intro.append(metadata, heading, element('p','project-summary',project.summary));
     const agent = element('div','project-agent');
     agent.append(element('span','agent-caption','协作 Agent'),element('span','agent-badge',project.agent));
@@ -70,7 +55,7 @@ function renderProjects(projects) {
     const facts = element('div', 'project-facts');
     [['协作任务',project.collaboration],['完成成果',project.outcome]].forEach(([label,value],i) => {
       const fact = element('div',i ? 'fact outcome' : 'fact');
-      fact.append(element('h4','fact-label',label),element('p','',value));
+      fact.append(element('h2','fact-label',label),element('p','',value));
       facts.append(fact);
     });
 
@@ -103,7 +88,7 @@ function renderProjects(projects) {
     sections.append(tags);
     project.sections.forEach(section => {
       const block = element('div','detail-section');
-      block.append(element('h4','',section.title));
+      block.append(element('h2','',section.title));
       if(section.text) block.append(element('p','',section.text));
       if(section.items) {
         const list=element('ul','');
@@ -169,10 +154,127 @@ function renderProjects(projects) {
     fragment.append(article);
   });
   $('#project-list').replaceChildren(fragment);
-  $('#hero-projects').replaceChildren(previews);
-  $('.hero-index').hidden = projects.length === 0;
+  return [...$('#project-list').children];
 }
-renderProjects(content.projects);
+
+function setupBookshelf(projects, chapters) {
+  const shelf = $('#projects');
+  const reader = $('#reader');
+  const scroll = $('.shelf-scroll');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const read = $('#preview-read');
+  let selected = -1;
+  let hoverTimer;
+  const books = projects.map((project, index) => {
+    const title = project.previewTitle || project.title;
+    const button = element('button', `shelf-book theme-${projectTheme(project)}`);
+    button.type = 'button';
+    button.setAttribute('aria-label', `${volume(index + 1)} · ${project.title}`);
+    const book = element('span', 'book-object');
+    book.setAttribute('aria-hidden', 'true');
+    const spine = element('span', 'book-spine');
+    spine.append(element('span', 'book-number', volume(index + 1)), element('span', 'spine-title', title));
+    const cover = element('span', 'book-cover');
+    const art = element('span', 'cover-art');
+    art.innerHTML = drawings[projectTheme(project)];
+    cover.append(element('span', 'book-number', `VOL. ${volume(index + 1)}`), element('strong', 'cover-title', title), art, element('span', 'cover-agent', project.agent));
+    book.append(spine, cover, element('span', 'book-pages'));
+    button.append(book);
+    button.addEventListener('pointerenter', event => {
+      if (event.pointerType !== 'mouse' || index === selected) return;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(() => select(index), 120);
+    });
+    button.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+    button.addEventListener('click', () => select(index, true));
+    button.addEventListener('keydown', event => {
+      const direction = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+      const target = direction ? (index + direction + books.length) % books.length
+        : event.key === 'Home' ? 0 : event.key === 'End' ? books.length - 1 : null;
+      if (target === null) return;
+      event.preventDefault();
+      select(target, true);
+      books[target].focus({ preventScroll: true });
+    });
+    return button;
+  });
+  if (!books.length) {
+    shelf.append(element('p', 'shelf-hint', '暂无项目。'));
+    return;
+  }
+  $('#shelf-books').replaceChildren(...books);
+  $('#shelf-layout').hidden = false;
+  const counter = index => `${volume(index + 1)} / ${volume(books.length)}`;
+
+  function select(index, reveal = false) {
+    clearTimeout(hoverTimer);
+    if (index !== selected) {
+      selected = index;
+      const project = projects[index];
+      books.forEach((book, position) => {
+        book.setAttribute('aria-pressed', String(position === index));
+        book.dataset.position = position < index ? 'before' : position > index ? 'after' : 'selected';
+      });
+      text('#shelf-count', counter(index));
+      text('#preview-caption', `${counter(index)}  /  ${project.category}`);
+      text('#preview-title', project.title);
+      text('#preview-agent', `协作 Agent · ${project.agent}`);
+      text('#preview-result', project.outcome);
+      text('#shelf-status', `已选中 ${project.title}，${counter(index)}`);
+      read.href = `#${project.id}`;
+    }
+    if (reveal && !shelf.hidden) {
+      const bounds = scroll.getBoundingClientRect();
+      const book = books[index].getBoundingClientRect();
+      if (book.left < bounds.left + 24 || book.right > bounds.right - 24) {
+        scroll.scrollBy({ left: book.left + book.width / 2 - bounds.left - bounds.width / 2, behavior: motion.matches ? 'instant' : 'smooth' });
+      }
+    }
+  }
+  for (const [selector, direction] of [['#shelf-prev', -1], ['#shelf-next', 1]]) {
+    const control = $(selector);
+    control.disabled = books.length < 2;
+    control.addEventListener('click', () => select((selected + direction + books.length) % books.length, true));
+  }
+  function chapterLink(selector, project, label) {
+    const link = $(selector);
+    link.hidden = !project;
+    if (project) {
+      link.href = `#${project.id}`;
+      link.textContent = `${label} · ${project.previewTitle || project.title}`;
+    }
+  }
+  function route(fromHashChange = false) {
+    const hash = location.hash;
+    const index = projects.findIndex(project => `#${project.id}` === hash);
+    clearTimeout(hoverTimer);
+    shelf.hidden = index >= 0;
+    reader.hidden = index < 0;
+    chapters.forEach((chapter, position) => { chapter.hidden = position !== index; });
+    const shelfLink = $('.site-header a[href="#projects"]');
+    if (index < 0 && (!hash || hash === '#projects')) shelfLink.setAttribute('aria-current', 'location');
+    else shelfLink.removeAttribute('aria-current');
+    if (index >= 0) {
+      select(index);
+      chapterLink('#chapter-prev', projects[index - 1], '← 上一章');
+      chapterLink('#chapter-next', projects[index + 1], '下一章 →');
+      chapters[index].querySelector('.project-title').focus({ preventScroll: true });
+      reader.scrollIntoView({ behavior: 'instant' });
+    } else if (hash === '#projects') {
+      select(selected, true);
+      $('#shelf-heading').focus({ preventScroll: true });
+      shelf.scrollIntoView({ behavior: 'instant' });
+    } else if (fromHashChange) {
+      if (!hash || hash === '#top') select(selected, true);
+      document.getElementById(hash.slice(1) || 'top')?.scrollIntoView({ behavior: 'instant' });
+    }
+  }
+  select(0);
+  route();
+  window.addEventListener('hashchange', () => route(true));
+}
+
+setupBookshelf(content.projects, renderProjects(content.projects));
 const practice = content.practice;
 text('#practice-heading', practice.title);
 text('#practice-introduction', practice.introduction);
