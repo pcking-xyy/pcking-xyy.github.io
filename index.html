@@ -4,22 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f8f7f3">
-  <meta name="description" content="与 AI 协作，把想法做成作品。夏杨阳的烟火识别、乐泊停车客服、狼人杀智能主持、石拱桥可视化与 XOR 反向传播复现，以及 Agent 实践记录。">
+  <meta name="description" content="夏杨阳的项目书架：烟火识别、乐泊停车客服、狼人杀智能主持、石拱桥可视化与 XOR 反向传播复现。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pcking-xyy.github.io/">
-  <meta property="og:title" content="夏杨阳 · 作品与 Agent 实践">
-  <meta property="og:description" content="与 AI 协作，把想法做成作品。计算机视觉、大模型应用、数据可视化、深度学习基础与 Agent 实践。">
+  <meta property="og:title" content="夏杨阳 · 项目书架">
+  <meta property="og:description" content="夏杨阳的项目书架：烟火识别、乐泊停车客服、狼人杀智能主持、石拱桥可视化与 XOR 反向传播复现。">
   <link rel="canonical" href="https://pcking-xyy.github.io/">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=20261118-bookshelf">
-  <script type="module" src="./app.js?v=20261118-bookshelf"></script>
-  <title>夏杨阳 · 作品与 Agent 实践</title>
+  <link rel="stylesheet" href="./styles.css?v=20261118-reader">
+  <link rel="stylesheet" href="./chapter-visuals.css?v=20261118-reader">
+  <script type="module" src="./app.js?v=20261118-reader"></script>
+  <title>夏杨阳 · 项目书架</title>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">跳至正文</a>
   <header class="site-header shell">
     <a class="brand" href="#top" aria-label="夏杨阳，返回顶部"><span class="brand-symbol" aria-hidden="true">xy.</span><span data-name>夏杨阳</span></a>
-    <nav aria-label="主导航"><a href="#projects">项目书架</a><a href="#practice">Agent 实践</a><a href="#contact">联系我 <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="主导航"><a href="#projects">项目书架</a><a href="#contact">联系我 <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main id="main">
     <section class="bookshelf shell" id="projects" aria-labelledby="shelf-heading">
@@ -33,7 +34,7 @@
             <span id="shelf-count" aria-hidden="true"></span>
             <button id="shelf-next" type="button" aria-label="下一本">→</button>
           </div>
-          <p class="shelf-hint"><span class="hint-mouse">悬停选书</span><span class="hint-touch">点选书籍</span> · 阅读项目详情</p>
+          <p class="shelf-hint"><span class="hint-mouse">悬停选书 · 点击阅读</span><span class="hint-touch">点选预览 · 再点阅读</span></p>
         </div>
         <div class="shelf-preview">
           <p class="shelf-caption" id="preview-caption"></p>
@@ -52,14 +53,8 @@
         <a id="chapter-prev"></a><a id="chapter-next"></a>
       </nav>
     </section>
-    <section class="practice shell" id="practice" aria-labelledby="practice-heading"><div class="practice-panel">
-      <div class="section-intro"><div><p class="eyebrow">02 / AGENT 实践</p><h2 id="practice-heading"></h2></div><p id="practice-introduction" class="section-description"></p></div>
-      <ol class="practice-steps" id="practice-steps"></ol>
-      <article class="website-case"><div><span class="agent-badge" id="website-agent"></span><h3 id="website-title"></h3></div><div><p id="website-text"></p><p class="website-result" id="website-result"></p></div></article>
-      <p class="reflection" id="practice-reflection"></p>
-    </div></section>
     <section class="contact shell" id="contact" aria-labelledby="contact-heading"><div class="contact-panel">
-      <div><p class="eyebrow">03 / 保持联系</p><h2 id="contact-heading"></h2><p id="contact-text" class="contact-description"></p></div>
+      <div><p class="eyebrow">02 / 保持联系</p><h2 id="contact-heading"></h2><p id="contact-text" class="contact-description"></p></div>
       <div class="contact-right"><a id="email-link" class="email-link"></a><div class="contact-actions"><a id="send-email" class="button button-dark">发送邮件 <span aria-hidden="true">↗</span></a><button id="copy-email" class="button button-outline" type="button">复制邮箱</button></div><p id="copy-status" role="status" aria-live="polite"></p></div>
     </div></section>
   </main>

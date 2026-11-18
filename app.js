@@ -1,4 +1,5 @@
-import { content } from './content.js?v=20261118-bookshelf';
+import { content } from './content.js?v=20261118-reader';
+import { renderChapterVisual } from './chapter-visuals.js?v=20261118-reader';
 const $ = selector => document.querySelector(selector);
 const text = (selector, value) => { $(selector).textContent = value; };
 function element(tag, className, value) {
@@ -32,6 +33,76 @@ $('#email-link').href = $('#send-email').href = `mailto:${content.email}`;
 const projectTheme = project => Object.hasOwn(drawings, project.visual) ? project.visual : 'fire';
 const volume = number => String(number).padStart(2, '0');
 
+function renderFeature(project, index) {
+  const { feature } = project;
+  const states = feature.kind === 'xor'
+    ? project.sections.find(section => section.key === 'xor-results').table.rows.map(row => ({
+      label: `(${row[0].replace(' ', ', ')})`,
+      text: `目标值为 ${row[1]}。以 0.5 为分类阈值，预测为 ${row[4]}。`,
+      row
+    }))
+    : feature.states;
+  const block = element('section', 'chapter-feature');
+  const title = element('h2', 'feature-title', feature.title);
+  title.id = `feature-title-${index}`;
+  block.setAttribute('aria-labelledby', title.id);
+  const header = element('header', 'feature-header');
+  header.append(element('p', 'feature-label', feature.label), title);
+  const controls = element('div', 'feature-controls');
+  controls.setAttribute('role', 'group');
+  controls.setAttribute('aria-label', '切换演示');
+  const stage = element('div', 'feature-stage');
+  stage.id = `feature-stage-${index}`;
+  const visual = element('div', 'feature-visual');
+  const note = element('p', 'feature-note');
+  note.setAttribute('aria-live', 'polite');
+  stage.append(visual, note);
+  const buttons = states.map(state => {
+    const button = element('button', 'feature-option', state.label);
+    button.type = 'button';
+    button.setAttribute('aria-controls', stage.id);
+    return button;
+  });
+  function show(position) {
+    buttons.forEach((button, key) => {
+      button.setAttribute('aria-pressed', String(key === position));
+    });
+    visual.replaceChildren(renderChapterVisual(feature.kind, position, states[position]));
+    note.textContent = states[position].text;
+  }
+  buttons.forEach((button, position) => {
+    button.addEventListener('click', () => show(position));
+    button.addEventListener('keydown', event => {
+      const direction = event.key === 'ArrowLeft' ? -1 : event.key === 'ArrowRight' ? 1 : 0;
+      if (!direction) return;
+      event.preventDefault();
+      const target = (position + direction + states.length) % states.length;
+      show(target);
+      buttons[target].focus();
+    });
+  });
+  controls.append(...buttons);
+  block.append(header, controls, stage);
+  show(0);
+  return block;
+}
+
+function renderResultFigure(section) {
+  const figure = element('figure', 'detail-figure chapter-evidence');
+  const link = element('a', 'figure-link');
+  link.href = section.image;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  const image = element('img');
+  image.src = section.image;
+  image.alt = section.imageAlt || '';
+  image.decoding = 'async';
+  link.append(image);
+  figure.append(link);
+  if (section.figureCaption) figure.append(element('figcaption', '', section.figureCaption));
+  return figure;
+}
+
 function renderProjects(projects) {
   const fragment = document.createDocumentFragment();
   projects.forEach((project, index) => {
@@ -47,7 +118,9 @@ function renderProjects(projects) {
     const heading = element('h1', 'project-title', project.title);
     heading.id = headingId;
     heading.tabIndex = -1;
-    intro.append(metadata, heading, element('p','project-summary',project.summary));
+    intro.append(metadata, heading);
+    if (project.feature) intro.append(element('p', 'chapter-question', project.feature.question));
+    intro.append(element('p','project-summary',project.summary));
     const agent = element('div','project-agent');
     agent.append(element('span','agent-caption','协作 Agent'),element('span','agent-badge',project.agent));
     intro.append(agent);
@@ -59,23 +132,9 @@ function renderProjects(projects) {
       facts.append(fact);
     });
 
-    const visual = element('figure', 'project-visual');
-    const visualTop = element('div', 'visual-top');
-    visualTop.append(element('span','',project.visualTitle || project.subtitle),element('span','diagram-label','流程示意'));
-    const art = element('div', 'visual-art');
-    art.setAttribute('aria-hidden', 'true');
-    art.innerHTML = drawings[theme];
-    const flow = element('ol', 'flow');
-    (project.flow || []).forEach(step => {
-      const li = element('li','');
-      li.append(element('strong','',step.label),element('small','',step.note));
-      flow.append(li);
-    });
-    visual.append(visualTop,art,flow,element('figcaption','',project.diagramNote || '项目流程示意'));
-
     const details = element('details','project-details');
     const summary = element('summary','');
-    const action = element('span','detail-action','查看过程与思考');
+    const action = element('span','detail-action','展开技术细节');
     summary.setAttribute('aria-label',`${project.title}：展开项目详情`);
     const icon = element('span','detail-icon','+');
     icon.setAttribute('aria-hidden','true');
@@ -86,7 +145,9 @@ function renderProjects(projects) {
     tags.setAttribute('aria-label','项目技术');
     project.technologies.forEach(tag=>tags.append(element('li','',tag)));
     sections.append(tags);
+    const evidence = project.sections.find(section => section.highlight && section.image);
     project.sections.forEach(section => {
+      if (section === evidence || ['任务目标', 'Agent 协作'].includes(section.title)) return;
       const block = element('div','detail-section');
       block.append(element('h2','',section.title));
       if(section.text) block.append(element('p','',section.text));
@@ -117,21 +178,7 @@ function renderProjects(projects) {
         pre.append(element('code','',section.code));
         block.append(pre);
       }
-      if(section.image) {
-        const figure=element('figure','detail-figure');
-        const link=element('a','figure-link');
-        link.href=section.image;
-        link.target='_blank';
-        link.rel='noopener';
-        const image=element('img');
-        image.src=section.image;
-        image.alt=section.imageAlt || '';
-        image.decoding='async';
-        link.append(image);
-        figure.append(link);
-        if(section.figureCaption) figure.append(element('figcaption','',section.figureCaption));
-        block.append(figure);
-      }
+      if(section.image) block.append(renderResultFigure(section));
       if(section.figure && drawings[section.figure]) {
         const figure=element('figure','detail-figure');
         const art=element('div','figure-art');
@@ -145,12 +192,14 @@ function renderProjects(projects) {
     });
     details.append(sections);
     details.addEventListener('toggle',()=>{
-      action.textContent=details.open?'收起项目详情':'查看过程与思考';
+      action.textContent=details.open?'收起技术细节':'展开技术细节';
       summary.setAttribute('aria-label',`${project.title}：${details.open?'收起':'展开'}项目详情`);
       icon.textContent=details.open?'−':'+';
     });
-    // 文档顺序即手机阅读顺序：先理解项目与成果，再看示意图。
-    article.append(intro,facts,visual,details);
+    article.append(intro, facts);
+    if (project.feature) article.append(renderFeature(project, index));
+    if (evidence) article.append(renderResultFigure(evidence));
+    article.append(details);
     fragment.append(article);
   });
   $('#project-list').replaceChildren(fragment);
@@ -161,10 +210,13 @@ function setupBookshelf(projects, chapters) {
   const shelf = $('#projects');
   const reader = $('#reader');
   const scroll = $('.shelf-scroll');
+  const bookList = $('#shelf-books');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const read = $('#preview-read');
   let selected = -1;
   let hoverTimer;
+  let hoverBook;
+  let touchInput = false;
   const books = projects.map((project, index) => {
     const title = project.previewTitle || project.title;
     const button = element('button', `shelf-book theme-${projectTheme(project)}`);
@@ -180,13 +232,16 @@ function setupBookshelf(projects, chapters) {
     cover.append(element('span', 'book-number', `VOL. ${volume(index + 1)}`), element('strong', 'cover-title', title), art, element('span', 'cover-agent', project.agent));
     book.append(spine, cover, element('span', 'book-pages'));
     button.append(book);
-    button.addEventListener('pointerenter', event => {
-      if (event.pointerType !== 'mouse' || index === selected) return;
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => select(index), 120);
+    button.addEventListener('pointerdown', event => {
+      touchInput = event.pointerType === 'touch' || event.pointerType === 'pen';
     });
-    button.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
-    button.addEventListener('click', () => select(index, true));
+    button.addEventListener('click', event => {
+      clearTimeout(hoverTimer);
+      const tap = event.pointerType === 'touch' || event.pointerType === 'pen' ||
+        (!event.pointerType && event.detail > 0 && touchInput);
+      if (tap && index !== selected) select(index, true);
+      else location.hash = project.id;
+    });
     button.addEventListener('keydown', event => {
       const direction = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
       const target = direction ? (index + direction + books.length) % books.length
@@ -202,8 +257,21 @@ function setupBookshelf(projects, chapters) {
     shelf.append(element('p', 'shelf-hint', '暂无项目。'));
     return;
   }
-  $('#shelf-books').replaceChildren(...books);
+  bookList.replaceChildren(...books);
   $('#shelf-layout').hidden = false;
+  bookList.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'mouse') return;
+    const book = event.target.closest('.shelf-book');
+    if (book === hoverBook) return;
+    clearTimeout(hoverTimer);
+    hoverBook = book;
+    const index = books.indexOf(book);
+    if (index >= 0 && index !== selected) hoverTimer = setTimeout(() => select(index), 120);
+  });
+  bookList.addEventListener('pointerleave', () => {
+    clearTimeout(hoverTimer);
+    hoverBook = null;
+  });
   const counter = index => `${volume(index + 1)} / ${volume(books.length)}`;
 
   function select(index, reveal = false) {
@@ -275,22 +343,6 @@ function setupBookshelf(projects, chapters) {
 }
 
 setupBookshelf(content.projects, renderProjects(content.projects));
-const practice = content.practice;
-text('#practice-heading', practice.title);
-text('#practice-introduction', practice.introduction);
-practice.steps.forEach((step,index) => {
-  const li = element('li', 'practice-step');
-  const number = element('span','step-number');
-  number.setAttribute('aria-hidden','true');
-  number.append(element('span','',String(index+1).padStart(2,'0')),element('span','',index===practice.steps.length-1?'↺':'→'));
-  li.append(number, element('h3','',step.title),element('p','',step.text));
-  $('#practice-steps').append(li);
-});
-text('#website-agent', `Agent · ${practice.website.agent}`);
-text('#website-title', practice.website.title);
-text('#website-text', practice.website.text);
-text('#website-result', practice.website.result);
-text('#practice-reflection', practice.reflection);
 $('#copy-email').addEventListener('click', async () => {
   const button = $('#copy-email');
   try {

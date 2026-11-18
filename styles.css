@@ -21,16 +21,17 @@
 .detail-figure .figure-link{display:block}.detail-figure img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:10px;background:#fff}
 
 [hidden]{display:none!important}
-.bookshelf{padding-block:34px 50px;border-bottom:1px solid var(--line);margin-bottom:40px}
+.bookshelf{padding-block:34px 50px;border-bottom:1px solid var(--line);margin-bottom:40px;min-height:calc(100svh - 110px)}
 .shelf-eyebrow,.shelf-caption,.book-number,#shelf-count{font:500 12px/1.5 Consolas,monospace;letter-spacing:.13em}
 .shelf-eyebrow{display:flex;align-items:center;gap:18px;color:var(--muted);margin:0 0 10px}
 .shelf-eyebrow::after{content:"";height:1px;background:var(--line);flex:1}
 .bookshelf h1,.shelf-preview h2,.reader .project-title{font-family:"Songti SC",SimSun,Georgia,serif;font-weight:700;letter-spacing:-.02em}
 .bookshelf h1{font-size:clamp(34px,5vw,55px);line-height:1.18;margin:0}
 .site-header nav [aria-current]{color:#385c69;text-decoration:underline;text-underline-offset:7px}
-.shelf-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(26px,5vw,70px);align-items:center}
+.shelf-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:clamp(28px,4vw,62px);align-items:center}
+.shelf-browser{min-width:0;container-type:inline-size}
 .shelf-scroll{overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:#c7c4b8 transparent}
-.shelf-books{--book-pitch:100px;--book-height:238px;--cover-width:132px;--book-lift:-52px;--book-pull:-58px;--neighbor-shift:13px;display:flex;position:relative;isolation:isolate;align-items:flex-end;width:max-content;min-width:100%;justify-content:center;padding:82px 38px 24px}
+.shelf-books{--book-pitch:clamp(76px,17cqi,128px);--book-height:clamp(205px,47cqi,352px);--spine-width:clamp(36px,6cqi,47px);--cover-width:calc(1.33 * var(--book-pitch));--book-lift:clamp(-73px,-10cqi,-46px);--book-pull:calc(-.6 * var(--book-pitch));--neighbor-shift:clamp(11px,2cqi,16px);display:flex;position:relative;isolation:isolate;align-items:flex-end;width:max-content;min-width:100%;justify-content:center;padding:clamp(71px,14cqi,108px) clamp(30px,5.7cqi,44px) 24px}
 .shelf-books::before{content:"";position:absolute;inset:auto 16px 24px;height:20px;border-bottom:1px solid #d7d3c6;background:radial-gradient(ellipse at bottom,#50463122,transparent 70%);pointer-events:none}
 .shelf-book{appearance:none;display:block;position:relative;flex:none;width:var(--book-pitch);height:var(--book-height);padding:0;background:none;border:0;color:#312e27;cursor:pointer;perspective:820px;outline-offset:-3px;-webkit-tap-highlight-color:transparent}
 .shelf-book[aria-pressed=true]{z-index:1}
@@ -40,18 +41,19 @@
 .shelf-book[data-position=after] .book-object{transform:translateX(var(--neighbor-shift))}
 .shelf-book[aria-pressed=true] .book-object{transform:translate3d(var(--book-pull),var(--book-lift),25px)}
 .book-spine,.book-cover,.book-pages{position:absolute;line-height:1.35;transition:transform 320ms cubic-bezier(.22,.72,.2,1);border:1px solid #d0cbbc}
-.book-spine{display:flex;flex-direction:column;align-items:center;gap:12px;inset:0 auto 0 calc(50% - 17px);width:34px;padding:13px 3px 9px;border-radius:4px 0 0 4px;background:linear-gradient(90deg,#e1ddce,#fffdf5 30%,#efebdf);box-shadow:-2px 6px 8px #41372528;transform-origin:right center;transform:rotateY(11deg)}
-.spine-title{writing-mode:vertical-rl;font:700 13px/1.35 "Songti SC",SimSun,Georgia,serif;letter-spacing:.08em;border-top:2px solid var(--accent);padding-top:8px}
-.book-cover,.book-pages{left:calc(50% + 17px);width:var(--cover-width);transform-origin:left center;transform:rotateY(81deg)}
+.book-spine{display:flex;flex-direction:column;align-items:center;gap:14px;inset:0 auto 0 calc(50% - var(--spine-width)/2);width:var(--spine-width);padding:15px 3px 9px;border-radius:4px 0 0 4px;background:linear-gradient(90deg,#e1ddce,#fffdf5 30%,#efebdf);box-shadow:-2px 6px 8px #41372528;transform-origin:right center;transform:rotateY(11deg)}
+.spine-title{writing-mode:vertical-rl;font:700 clamp(13px,2.45cqi,17px)/1.35 "Songti SC",SimSun,Georgia,serif;letter-spacing:.08em;border-top:2px solid var(--accent);padding-top:9px}
+.book-cover,.book-pages{left:calc(50% + var(--spine-width)/2);width:var(--cover-width);transform-origin:left center;transform:rotateY(81deg)}
 .book-cover{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:10px;top:0;bottom:0;padding:16px 13px 12px;background:linear-gradient(90deg,#e9e5d8 0,#fdfbf3 9px,#fdfbf3 100%);border-left:0;border-radius:0 2px 2px 0}
 .book-pages{top:-10px;height:11px;background:repeating-linear-gradient(0deg,#e3ded0 0 1px,#fdfbf5 1px 3px);transform:rotateY(81deg) skewX(-38deg);border-color:#ddd7c8}
-.cover-title{font:700 clamp(14px,1.6vw,17px)/1.3 "Songti SC",SimSun,Georgia,serif}
+.cover-title{font:700 clamp(14px,3.2cqi,22px)/1.3 "Songti SC",SimSun,Georgia,serif}
 .cover-art{display:grid;place-items:center;width:100%;min-height:0;flex:1;background:var(--wash);border-block:1px solid var(--line)}
 .cover-art svg{width:100%;height:auto;display:block}
 .cover-agent{font:500 10px/1.4 Consolas,monospace;color:var(--accent);letter-spacing:.12em}
 .shelf-book[aria-pressed=true] .book-cover{transform:rotateY(21deg);box-shadow:8px 12px 22px -15px #33291d70}
 .shelf-book[aria-pressed=true] .book-pages{transform:rotateY(21deg) skewX(-38deg)}
 .shelf-book[aria-pressed=true] .book-spine{transform:rotateY(-24deg)}
+.shelf-book[aria-pressed=true] :is(.book-cover,.book-spine,.book-pages){pointer-events:auto}
 .shelf-controls{display:flex;justify-content:center;align-items:center;gap:14px}
 .shelf-controls button{min-width:44px;min-height:44px;padding:0;border:0;background:transparent;color:var(--ink);font:21px/1 system-ui;cursor:pointer}
 .shelf-controls button:hover:not(:disabled){background:#ebe8de}
@@ -82,18 +84,48 @@
 .reader .visual-art{max-height:150px}
 .reader-nav{margin-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 18px}
 #chapter-next{margin-inline-start:auto}
+
+.reader{max-width:920px}
+.reader .project-intro{padding-top:23px}
+.reader .project-title{margin-bottom:14px}
+.reader .chapter-question{margin:0 0 10px;color:var(--accent);font-size:clamp(18px,2.4vw,23px);line-height:1.55;font-weight:600}
+.reader .project-summary{max-width:67ch}
+.reader .project-facts{max-width:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3.2vw,38px);padding-block:23px 30px}
+.reader .fact{border:0;border-inline-start:2px solid var(--tint);padding:0 0 0 14px;background:none;border-radius:0}
+.reader .fact .fact-label{margin:0 0 4px}
+.chapter-feature{margin:0 0 29px;min-width:0;border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:14px;background:#fffefa;overflow:hidden}
+.feature-header,.feature-controls,.feature-stage{padding-inline:clamp(15px,3.4vw,28px)}
+.feature-header{padding-top:20px;padding-bottom:14px}
+.feature-label{margin:0 0 4px;font-size:12px;letter-spacing:.07em;color:var(--accent)}
+.feature-title{margin:0;font-family:"Songti SC",SimSun,Georgia,serif;font-size:clamp(22px,3vw,31px);line-height:1.3}
+.feature-controls{display:flex;flex-wrap:wrap;gap:6px 8px;margin-bottom:15px}
+.feature-option{min-height:44px;padding:5px 12px;border:1px solid var(--line);border-radius:5px;background:#fffefa;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.feature-option:hover{background:var(--wash)}
+.feature-option[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:var(--wash);font-weight:700}
+.feature-stage{padding-bottom:18px}
+.feature-visual{min-width:0}
+.feature-note{margin:11px 0 0;color:var(--muted);font-size:14px;line-height:1.7}
+.reader .chapter-evidence{margin:0 0 29px}
+.reader .project-details{border-bottom:1px solid var(--line)}
+.reader .detail-sections{max-width:740px}
+@media(max-width:570px){
+  .reader{padding-top:19px}
+  .reader .project-facts{grid-template-columns:1fr;gap:14px}
+  .feature-controls{gap:6px}
+  .feature-option{padding-inline:9px}
+}
 @media(max-width:1160px){
-  .shelf-books{--book-pitch:76px;--book-height:203px;--cover-width:106px;--book-lift:-47px;--book-pull:-47px;--neighbor-shift:12px;padding-inline:30px}
   .book-cover{padding-inline:9px}
 }
 @media(max-width:850px){
-  .bookshelf{padding-block:24px 26px;margin-bottom:25px}
+  .bookshelf{min-height:0;padding-block:24px 26px;margin-bottom:25px}
   .shelf-layout{grid-template-columns:minmax(0,1fr);gap:13px}
-  .shelf-books{--book-pitch:62px;--book-height:165px;--cover-width:79px;--book-lift:-38px;--book-pull:-36px;--neighbor-shift:10px;padding:61px 21px 17px}
+  .shelf-books{--book-pitch:clamp(62px,17cqi,88px);--book-height:clamp(177px,50cqi,230px);--spine-width:34px;--book-lift:-38px;--neighbor-shift:10px;padding:61px 24px 17px}
   .shelf-books::before{bottom:17px}
   .book-spine{padding-top:9px;gap:8px}
   .spine-title{font-size:12px}
   .book-cover{gap:7px;padding:10px 8px}
+  .cover-title{font-size:14px}
   .shelf-preview{padding-block:13px 0;border-top:1px solid var(--line)}
   .shelf-agent{margin:8px 0 10px}
   .shelf-read{margin-top:16px}

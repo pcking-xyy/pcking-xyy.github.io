@@ -1,0 +1,29 @@
+.chapter-visual-diagram{overflow:hidden;border:1px solid var(--line);border-radius:8px}
+.chapter-visual-diagram svg{display:block;width:100%;height:auto}
+.chapter-visual-diagram text{font:500 16px/1.4 var(--font);fill:#34342f}
+.chapter-visual-diagram .svg-heading{font-size:19px;font-weight:700}
+.chapter-visual-diagram .svg-caption{fill:#53534b}
+.chapter-visual-diagram .svg-inverse{fill:#fffefa}
+.chapter-visual-diagram .svg-small{font-size:12px}
+.chapter-visual-demo-chat{display:grid;margin:0;gap:12px;padding:clamp(12px,4vw,28px);list-style:none;background:#eaf0ef;border:1px solid #d4dfdc;border-radius:8px}
+.chapter-visual-bubble{max-width:min(100%,58ch);justify-self:start;padding:10px 14px;border-radius:2px 14px 14px 14px;background:#fffefa;color:var(--ink)}
+.chapter-visual-bubble:nth-child(odd){justify-self:end;border-radius:14px 2px 14px 14px;background:#d7e6e7}
+.chapter-visual-bubble strong{display:block;margin-bottom:2px;color:#39606b;font-size:12px}
+.chapter-visual-bubble p{margin:0;line-height:1.6}
+.chapter-visual-xor{padding:clamp(12px,4vw,24px);border:1px solid #e6d8e0;border-radius:8px;background:#f0e8ed}
+.chapter-visual-trace{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0}
+.chapter-visual-trace>div{min-width:0;padding:10px;border:1px solid #e5d8df;background:#fffefa}
+.chapter-visual-trace dt{font-size:12px;color:#675761}
+.chapter-visual-trace dd{margin:3px 0 0}
+.chapter-visual-trace strong{display:block;font:600 clamp(14px,3vw,20px)/1.5 Consolas,monospace;color:#553549}
+.chapter-visual-meter{display:block;width:100%;height:.65rem;margin-top:5px}
+.chapter-visual-meter::-webkit-meter-optimum-value{background:#6e4d63}
+.chapter-visual-meter::-moz-meter-bar{background:#6e4d63}
+.chapter-visual-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:13px 0 0;color:#5e4a57}
+.chapter-visual-verdict strong{font-size:17px;color:#553549}
+@media (max-width:480px){
+  .chapter-visual-trace{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chapter-visual-diagram text{font-size:19px}
+  .chapter-visual-diagram .svg-small{font-size:16px}
+  .chapter-visual-diagram .svg-heading{font-size:21px}
+}

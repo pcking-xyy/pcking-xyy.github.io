@@ -1,14 +1,20 @@
 // 项目按 projects 数组顺序显示；文案与样式独立维护。
 export const content = {
   name: '夏杨阳', email: '2341501016@stu.suda.edu.cn',
-  title: '夏杨阳 · 作品与 Agent 实践',
-  description: '与 AI 协作，把想法做成作品。夏杨阳的烟火识别、乐泊停车客服、狼人杀智能主持、石拱桥可视化与 XOR 反向传播复现，以及 Agent 实践记录。',
+  title: '夏杨阳 · 项目书架',
+  description: '夏杨阳的项目书架。翻阅烟火识别、乐泊停车客服、狼人杀智能主持、石拱桥可视化与 XOR 反向传播复现，查看演示、协作过程和成果。',
   hero: {eyebrow: '个人作品集 · AGENT 实践', heading: ['与 AI 协作，', '把想法做成作品。'], introduction: '我是夏杨阳，关注计算机视觉、大模型应用与数据可视化。这里记录我与 AI 一起，将想法逐步实现的过程。', note: '以问题为起点，在实践中迭代。'},
   projectsHeading: '作品，让想法有迹可循。', projectsIntroduction: '从视觉识别、客服模型到数据表达与模型基础，记录每个项目的目标、Agent 协作与阶段成果。',
   contactHeading: '聊聊你的下一个想法。', contactText: '关于项目、AI 协作，或一个正在萌芽的想法，欢迎来信。',
   projects: [
     {id:'fire-smoke', visual:'fire', previewTitle:'烟火识别', previewTag:'检测与辅助复核', visualTitle:'从画面输入，到辅助判断', category:'计算机视觉', title:'AI 烟火识别系统', subtitle:'从看见烟火，到辅助判断。', agent:'Codex',
       summary:'结合 YOLO 检测与 Gemma 3 辅助复核，探索画面中的火焰与烟雾识别。',
+      feature:{kind:'fire',question:'画面中出现一团疑似烟雾，系统怎么处理？',title:'跟着画面走一遍',label:'流程示意 · 非实测画面',states:[
+        {label:'画面输入',text:'图片、视频和摄像头都可以提供画面。这里用同一张示意图走完检测流程。'},
+        {label:'YOLO 检测',text:'YOLO 先在画面上定位疑似火焰与烟雾，检测框标出需要关注的区域。'},
+        {label:'Gemma 3 复核',text:'部分候选图像交给 Gemma 3 辅助判断。这个环节补充判断依据，不代表最终结论。'},
+        {label:'呈现结果',text:'页面一起呈现检测与复核信息。示意框不表示置信度，真实效果需要另用样本验证。'}
+      ]},
       collaboration:'采用 vibe coding 的方式描述需求，借助 Codex 辅助生成实现、排查问题，并根据运行反馈持续调整。',
       outcome:'形成烟火检测与辅助复核流程，支持图片、视频及摄像头输入。',
       technologies:['YOLO','Gemma 3','Python','OpenCV'],
@@ -21,6 +27,10 @@ export const content = {
         {title:'实践思考',text:'能够运行只是起点。检测效果需要结合样本、场景和误报漏报情况判断，单次测试结果不能代表所有真实环境。'}]},
     {id:'lebo-parking',visual:'support',previewTitle:'乐泊停车客服',previewTag:'客服语料与模型微调',visualTitle:'让业务知识与客服行为协同',category:'大模型应用',title:'乐泊停车客服',subtitle:'从客服问答，到可持续迭代的对话系统。',agent:'Codex',
       summary:'面向乐泊停车客服场景，围绕语料建设、知识库检索与文本大模型微调，规划可靠的中文客服问答系统。',
+      feature:{kind:'parking',question:'用户只问「停车怎么收费」，客服该直接回答吗？',title:'试试两种客服处理方式',label:'方案演示 · 非线上对话',states:[
+        {label:'信息不足',text:'先补齐停车场等必要信息，再查对应业务规则。',messages:[{speaker:'用户',text:'请问停车怎么收费？'},{speaker:'客服',text:'请问您停的是哪个停车场？告诉我停车场名称或所在位置，我再帮您核对。'}]},
+        {label:'规则无法核实',text:'知识库找不到可核实的依据时，不猜测收费标准，改为转人工。',messages:[{speaker:'用户',text:'就是刚才发给你的这个停车场，今晚的收费能确认吗？'},{speaker:'客服',text:'我暂时查不到该停车场今晚适用的收费规则，可以转人工帮您核实。'}]}
+      ]},
       collaboration:'借助 Codex 梳理客服需求、语料结构和训练流程，整理 RAG 与 QLoRA 的技术路线，以及评测和转人工边界。',
       outcome:'形成客服语料建设与模型微调方案，明确数据整理、检索增强、行为训练和独立评测的实施路径。',
       technologies:['Qwen','RAG','QLoRA','LLaMA-Factory'],
@@ -34,6 +44,12 @@ export const content = {
         {title:'实践思考',text:'可更新的业务知识适合放在知识库中，稳定的表达与处理习惯通过微调塑造。评估时需要保留独立问题簇，避免同一问题的改写版本同时进入训练和测试。'}]},
     {id:'werewolf', visual:'game', previewTitle:'狼人杀主持', previewTag:'视觉与游戏交互', visualTitle:'让规则与视觉共同推进游戏', category:'视觉交互',title:'狼人杀智能主持系统',subtitle:'让视觉感知，参与游戏进程。',agent:'Claude',
       summary:'用实时视觉连接线下游戏规则，让系统引导流程、识别手势并统计投票。',
+      feature:{kind:'werewolf',question:'五个人围坐一桌，没有专职主持，游戏怎么继续？',title:'推进一轮五人局',label:'游戏流程示意 · 不使用摄像头',states:[
+        {label:'天黑',text:'主持提示：「天黑请闭眼。」系统进入夜间阶段。'},
+        {label:'狼人行动',text:'主持提示：「狼人请睁眼，选择目标。」倒计时给出行动窗口。'},
+        {label:'天亮',text:'主持提示：「天亮了。」系统切换到白天，公告夜间结果并引导讨论。'},
+        {label:'手势投票',text:'讨论结束后进入投票。这里显示示例票数；实际项目通过视觉识别玩家手势。'}
+      ]},
       collaboration:'通过与 Claude 对话，把游戏规则逐步转化为程序逻辑，围绕流程引导、倒计时和手势投票迭代实现。',
       outcome:'完成自动流程引导、阶段倒计时和手势投票，支持五人局多轮运行。', technologies:['Python','OpenCV'],
       flow:[{label:'阶段引导',note:'按游戏规则推进'},{label:'倒计时',note:'控制各阶段节奏'},{label:'手势投票',note:'视觉识别与统计'}],
@@ -45,6 +61,12 @@ export const content = {
         {title:'实践思考',text:'自然语言里的游戏规则需要变成明确的状态与条件。描述清楚每个阶段如何进入、如何结束，有助于让生成的实现更贴近需求。'}]},
     {id:'stone-bridges',visual:'bridge',previewTitle:'石拱桥可视化',previewTag:'结构与历史的数据表达',visualTitle:'连接结构、地理与历史',category:'数据可视化',title:'中国石拱桥数据可视化平台',subtitle:'用数据，连接结构与历史。',agent:'Claude',
       summary:'整理桥梁的结构、年代与地理信息，以多维图表呈现石拱桥之间的关联。',
+      feature:{kind:'bridge',question:'同一份石拱桥资料，换一种图能看出什么？',title:'从四个问题看石拱桥',label:'图表示意 · 不代表真实统计',states:[
+        {label:'哪里集中',text:'地理热力图用颜色表示相对密集的位置，回答「桥梁在空间上分布在哪里？」'},
+        {label:'何时建造',text:'时间轴柱状图按朝代组织数量，便于比较各时期的样本分布。'},
+        {label:'尺寸关系',text:'散点图把桥跨与桥宽放在两个轴上，每个点对应一座桥，便于观察两者的关系。'},
+        {label:'单桥结构',text:'雷达图把一座桥的多项结构参数放在一起。示意图只解释图形怎么读。'}
+      ]},
       collaboration:'借助 Claude 将数据展示想法转化为页面与程序，通过描述需求、查看运行效果和调整实现，逐步完成可视化。',
       outcome:'完成结构化数据与前后端联动，以四类图表呈现地理、年代和结构信息。',technologies:['ECharts','Flask','MySQL','JavaScript'],
       flow:[{label:'桥梁资料',note:'地理 / 年代 / 结构'},{label:'数据组织',note:'MySQL + Flask'},{label:'多维表达',note:'ECharts 可视化'}],
@@ -56,6 +78,7 @@ export const content = {
         {title:'实践思考',text:'图表的价值在于回答问题。选择图表时，需要先确定希望读者比较什么，再决定数据字段与呈现方式。'}]},
     {id:'xor-mlp',visual:'mlp',previewTitle:'XOR 反向传播',previewTag:'双框架复现与梯度验证',visualTitle:'让隐藏层学会异或',category:'深度学习基础',title:'XOR 多层网络与反向传播',subtitle:'从一次反向传播，看懂网络怎样变好。',agent:'DeepSeek',
       summary:'按课程讲义复现 2–2–1 多层感知器：用 TensorFlow 与 PyTorch 各训练 300 轮，让网络学会 XOR，再手算梯度核对反向传播。',
+      feature:{kind:'xor',question:'都是 0 和 1，为什么一条直线分不开 XOR？',title:'点选输入，查看网络输出',label:'实验记录 · 300 轮训练后'},
       collaboration:'以讲义给出的代码和初始权重为基准，先在两个框架下分别运行并对照每一轮的损失，再用链式法则手算四个参数的梯度、与自动求导逐项比较；过程中处理了 Python 3.13 的 TensorFlow 安装与国内网络下载问题。',
       outcome:'两套框架均完成 300 轮训练，损失由 0.562 降至 0.028，四个样本全部判对；手算梯度与自动求导的差值在 1e-17 量级。',
       technologies:['Python','TensorFlow','PyTorch','NumPy'],
@@ -67,14 +90,10 @@ export const content = {
         {title:'五步拆解',items:['张量：x 是 4×2 的矩阵，四行依次是 00、01、10、11；target 是 4×1 的列向量。','前向：h = σ(xW + b_h)，z = hv + b_o，σ 为 sigmoid，z 是未归一化的 logits。','损失：L = −1/N · Σ[t·log σ(z) + (1−t)·log(1−σ(z))]，N = 4。','求梯度：tape.gradient 或 loss.backward() 沿计算图反向调用链式法则，只写入梯度，不改参数。','更新：Adam 用一阶与二阶动量决定每个参数的步长，学习率 0.03；这一步才真正改变 W、b_h、v、b_o。']},
         {title:'关键代码',text:'两段代码结构一一对应。下面以 PyTorch 版为例，TensorFlow 版用 GradientTape 包住前向与损失，再用 apply_gradients 更新。',code:'hidden = torch.sigmoid(x @ W + b_hidden)\nlogits = hidden @ v + b_output\nloss = F.binary_cross_entropy_with_logits(logits, target)\nloss.backward()      # 反向传播：把梯度写进各参数的 .grad\noptimizer.step()     # Adam 更新：读取梯度并修改参数'},
         {title:'复现环境',items:['Windows + Python 3.13.2，PyTorch 2.6.0，TensorFlow 2.21.0，NumPy 2.2.6。','Python 3.13 需要 TensorFlow ≥ 2.20；TensorFlow 装在独立 .venv 中，复用系统已有的 PyTorch 与 NumPy。','官方源下载速度只有约 0.2 MB/s，改用国内镜像后几分钟装完；两份原版脚本各运行一次即可复现。']},
-        {title:'运行结果',table:{head:['输入','目标','隐藏层 (h₁, h₂)','输出概率','预测'],rows:[['0 0','0','(0.030, 0.030)','0.0287','0'],['0 1','1','(0.000, 0.935)','0.9745','1'],['1 0','1','(0.935, 0.000)','0.9745','1'],['1 1','0','(0.034, 0.034)','0.0305','0']]},text:'损失从 0.561960 降到 0.028066（TensorFlow）与 0.028065（PyTorch）。两个框架的损失曲线最大差距 6.5×10⁻⁶，最终权重最大差距 6.0×10⁻⁵，四个样本的分类结果完全一致。'},
-        {title:'损失曲线',image:'./assets/xor-loss-curves.png',imageAlt:'TensorFlow 与 PyTorch 的损失曲线（左）和四个样本的最终输出概率（右）',figureCaption:'300 轮训练的真实结果：左图两条损失曲线几乎完全重合，右图四个样本的输出概率分别落在 0.5 阈值两侧。点击图片可查看大图。'},
+        {key:'xor-results',title:'运行结果',table:{head:['输入','目标','隐藏层 (h₁, h₂)','输出概率','预测'],rows:[['0 0','0','(0.030, 0.030)','0.0287','0'],['0 1','1','(0.000, 0.935)','0.9745','1'],['1 0','1','(0.935, 0.000)','0.9745','1'],['1 1','0','(0.034, 0.034)','0.0305','0']]},text:'损失从 0.561960 降到 0.028066（TensorFlow）与 0.028065（PyTorch）。两个框架的损失曲线最大差距 6.5×10⁻⁶，最终权重最大差距 6.0×10⁻⁵，四个样本的分类结果完全一致。'},
+        {title:'损失曲线',highlight:true,image:'./assets/xor-loss-curves.png',imageAlt:'TensorFlow 与 PyTorch 的损失曲线（左）和四个样本的最终输出概率（右）',figureCaption:'300 轮训练的真实结果：左图两条损失曲线几乎完全重合，右图四个样本的输出概率分别落在 0.5 阈值两侧。点击图片可查看大图。'},
         {title:'梯度核验',text:'在初始权重处，用链式法则手算 ∂L/∂W、∂L/∂b_h、∂L/∂v、∂L/∂b_o，再与两套框架的自动求导结果逐项比较：最大差值 1.4×10⁻¹⁷，属于双精度浮点的舍入范围。框架给出的梯度就是链式法则的结果，并不是黑箱。'},
         {title:'观察与结论',items:['隐藏单元分工：训练后 h₁ 只在输入 (1,0) 时接近 1，h₂ 只在 (0,1) 时接近 1，其余情况接近 0；输出层把这两个中间特征合并，XOR 就变成了可线性分开的问题。','300 轮时损失 0.028、概率约 0.97 与 0.03，已经能正确分类，但还没有完全收敛，继续训练损失仍会下降。','两个框架的差异来自浮点运算次序，不是算法差异；同一套数学在两个框架下给出同一条曲线。']},
         {title:'实践思考',text:'反向传播负责算梯度，Adam 负责决定沿梯度走多远。把两件事分开看，调整学习率、判断收敛和排查问题时都更有依据；手算一次梯度之后，代码里的 backward() 也不再是黑箱。'}]},
   ],
-  practice:{title:'把对话，推进成作品。',introduction:'我主要采用 vibe coding：用自然语言表达目标，借助 Agent 推进实现，再把运行中的问题带回下一轮对话。',
-    steps:[{title:'描述需求',text:'说清楚要解决的问题、使用场景与期待的结果。'},{title:'生成实现',text:'借助 Agent 将想法转化为代码与功能。'},{title:'运行反馈',text:'查看实际效果，发现偏差并补充具体问题。'},{title:'迭代调整',text:'根据反馈修改，再检查功能是否符合目标。'}],
-    website:{title:'这个网站，也是一次实践。',agent:'Codex',text:'从需求梳理、页面开发到交互检查与公开发布，借助 Codex 将个人作品整理成可访问的网站，并继续按反馈迭代。',result:'成果：一个无需登录即可浏览的个人网站，支持手机与电脑访问。'},
-    reflection:'Agent 参与实现，运行结果决定下一步。清晰的需求、具体的反馈和对成果的检查，是这类协作中持续需要投入的工作。'}
 };
